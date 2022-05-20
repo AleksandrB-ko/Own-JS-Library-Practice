@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AAAA,IAAI,AAAA,CACA,OAAO,CAAE,YAAY,CACrB,OAAO,CAAE,SAAS,CAClB,MAAM,CAAE,SAAU,CACrB",
+    "sources": [
+        "../components/button.scss"
+    ],
+    "names": [],
+    "file": "button.min.css"
+}
