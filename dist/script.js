@@ -111,6 +111,119 @@ Object(_core__WEBPACK_IMPORTED_MODULE_0__["default"])('.dropdown-toggle').dropdo
 
 /***/ }),
 
+/***/ "./src/js/lib/components/modal.js":
+/*!****************************************!*\
+  !*** ./src/js/lib/components/modal.js ***!
+  \****************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../core */ "./src/js/lib/core.js");
+
+
+_core__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.calcScrollWidth = function () {
+  let div = document.createElement('div');
+  div.style.cssText = 'width:50px;height:50px;overflow-y:scroll;visibility:hidden;';
+  document.body.append(div);
+  let scrollWidth = div.offsetWidth - div.clientWidth;
+  div.remove();
+  return scrollWidth;
+};
+
+_core__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.modal = function (created) {
+  for (let i = 0; i < this.length; i++) {
+    const target = Object(_core__WEBPACK_IMPORTED_MODULE_0__["default"])(this[i]).getAttr('data-target');
+    Object(_core__WEBPACK_IMPORTED_MODULE_0__["default"])(this[i]).click(e => {
+      e.preventDefault();
+      Object(_core__WEBPACK_IMPORTED_MODULE_0__["default"])(target).fadeIn(500);
+      document.body.style.overflow = 'hidden';
+      document.body.style.marginRight = `${this.calcScrollWidth()}px`;
+    });
+    const closeElements = document.querySelectorAll(`${target} [data-close]`);
+    closeElements.forEach(elem => {
+      Object(_core__WEBPACK_IMPORTED_MODULE_0__["default"])(elem).click(() => {
+        Object(_core__WEBPACK_IMPORTED_MODULE_0__["default"])(target).fadeOut(500);
+        document.body.style.overflow = '';
+
+        if (created) {
+          document.querySelector(target).remove();
+        }
+      });
+    });
+    Object(_core__WEBPACK_IMPORTED_MODULE_0__["default"])(target).click(e => {
+      if (e.target.classList.contains('modal')) {
+        Object(_core__WEBPACK_IMPORTED_MODULE_0__["default"])(target).fadeOut(500);
+        document.body.style.overflow = '';
+
+        if (created) {
+          document.querySelector(target).remove();
+        }
+      }
+    });
+  }
+};
+
+Object(_core__WEBPACK_IMPORTED_MODULE_0__["default"])('[data-toggle ="modal" ]').modal();
+
+_core__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.createModal = function () {
+  let {
+    text,
+    btns
+  } = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+  for (let i = 0; i < this.length; i++) {
+    let modal = document.createElement('div');
+    modal.classList.add('modal');
+    Object(_core__WEBPACK_IMPORTED_MODULE_0__["default"])(modal).setAttr('id', Object(_core__WEBPACK_IMPORTED_MODULE_0__["default"])(this[i]).getAttr('data-target').slice(1)); // btns = {count: num, settings: [[text, classNames = [], close, callback]]}
+    // кнопки btns = {кол-вол кнопок: 2, настройки: [[строка с текстом внутри кнопки, классы стилей кнопки, кнопка "закрыть"(true или false), callback ф-ция]]}
+
+    const buttons = [];
+
+    for (let j = 0; j < btns.count; j++) {
+      let [buttonText, classNames, close, callback] = btns.settings[j]; // деструктурируем массив settings
+
+      let btn = document.createElement('button'); // создаем кнопку
+
+      btn.classList.add('btn', ...classNames); // добавляем классы стилей
+
+      btn.textContent = buttonText; // устанавливаем текст кнопки из btns.settings[j][0]
+
+      if (close) {
+        // если btns.settings[j][2] = true, т.е. нужно, чтобы кнопка закрывала модальное окно, то
+        Object(_core__WEBPACK_IMPORTED_MODULE_0__["default"])(btn).setAttr('data-close', 'true'); // устанавливаем атрибут data-close
+      }
+
+      if (callback && typeof callback === 'function') {
+        // если передана callback ф-ция, то
+        Object(_core__WEBPACK_IMPORTED_MODULE_0__["default"])(btn).click(callback); // при клике на кнопку выполняется эта callback ф-ция
+      }
+
+      buttons.push(btn); // добавляем соззданную кнопку в массив с кнопками
+    }
+
+    Object(_core__WEBPACK_IMPORTED_MODULE_0__["default"])(modal).html(`<div class="modal-dialog">
+	    		<div class="modal-content">
+	    			<button class="close" data-close><span>&times;</span></button>
+	    			<div class="modal-header">
+	    				<div class="modal-title">${text.title}</div>
+	    			</div>
+	    			<div class="modal-body">${text.body}</div>
+	    			<div class="modal-footer">
+	    				
+	    			</div>
+	    		</div>
+	    	</div>`);
+    modal.querySelector('.modal-footer').append(...buttons);
+    document.body.append(modal);
+    Object(_core__WEBPACK_IMPORTED_MODULE_0__["default"])(this[i]).modal(true);
+    Object(_core__WEBPACK_IMPORTED_MODULE_0__["default"])(Object(_core__WEBPACK_IMPORTED_MODULE_0__["default"])(this[i]).getAttr('data-target')).fadeIn(500);
+  }
+};
+
+/***/ }),
+
 /***/ "./src/js/lib/core.js":
 /*!****************************!*\
   !*** ./src/js/lib/core.js ***!
@@ -189,6 +302,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_actions__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/actions */ "./src/js/lib/modules/actions.js");
 /* harmony import */ var _modules_effects__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/effects */ "./src/js/lib/modules/effects.js");
 /* harmony import */ var _components_dropdown__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/dropdown */ "./src/js/lib/components/dropdown.js");
+/* harmony import */ var _components_modal__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/modal */ "./src/js/lib/components/modal.js");
+
 
 
 
@@ -669,25 +784,25 @@ __webpack_require__.r(__webpack_exports__);
 //$('div').addClass('super', 'hello');
 //$('.active').removeClass('super', 'hello');
 //$('.active').toggleClass('super');
-//$('.active').addAction('click', sayHello);
-//$('.active').removeAction('click', sayHello);
-//$('.active').addClick(sayHello);
+//$('.active').on('click', sayHello);
+//$('.active').off('click', sayHello);
+//$('.active').click(sayHello);
 
-/*$('button').addAction('click', function() {
+/*$('button').on('click', function() {
     $(this).toggleClass('active');
 });*/
 
-/*$('button').addClick(function() {
+/*$('button').click(function() {
     $(this).toggleClass('active');
 });*/
 //$('button').setAttr('disabled', 'true');
 //$('button').getAttr('disabled');
 
-/*$('button').addClick(function() {
+/*$('button').click(function() {
     $(this).setAttr('disabled', 'true');
 });*/
 
-/*$('button').addClick(function() {
+/*$('button').click(function() {
     $(this).getAttr();
 });*/
 //$('div').setAttr('id', 'new');
@@ -696,24 +811,24 @@ __webpack_require__.r(__webpack_exports__);
 //$('.active').setAttr('id', 'new');
 //$('.active').toggleAttr('id', 'new');
 
-/*$('button').addClick(function() {
+/*$('button').click(function() {
     $('.active').toggleAttr('id', 'new');
 });*/
 //Создаем методы для работы с элементами
 //console.log($('.active').htmlContent());
 
-/*$('button').addClick(function() {
+/*$('button').click(function() {
     $(this).htmlContent('Thanks!');
 });*/
 
-/*$('button').addClick(function() {
+/*$('button').click(function() {
     $('div').getElem(2).toggleClass('active');
 });*/
 
-/*$('button').addClick(function() {
+/*$('button').click(function() {
     $('div').getElem(2).htmlContent('Thanks!');
 });
-$('div').addClick(function() {
+$('div').click(function() {
     console.log($(this).getElemIndex());
 });*/
 //console.log($('div').getElem(2).findElem('.more'));
@@ -731,24 +846,24 @@ $('div').addClick(function() {
 }*/
 // Работа со стилями + создаем готовые компоненты кнопок для библиотеки
 
-/*$('#first').addClick(() => {
+/*$('#first').click(() => {
     $('div').getElem(1).fadeOut(800);
 });
-$('[data-count="second"]').addClick(() => {
+$('[data-count="second"]').click(() => {
     $('div').getElem(2).fadeOut(800);
 });
-$('button').getElem(2).addClick(() => {
+$('button').getElem(2).click(() => {
     $('.w-500').fadeOut(800);
 });*/
 // Создаем анимацию fadeToggle
 
-/*$('#first').addClick(() => {
+/*$('#first').click(() => {
     $('div').getElem(1).fadeToggle(800);
 });
-$('[data-count="second"]').addClick(() => {
+$('[data-count="second"]').click(() => {
     $('div').getElem(2).fadeToggle(800);
 });
-$('button').getElem(2).addClick(() => {
+$('button').getElem(2).click(() => {
     $('.w-500').fadeToggle(800);
 });*/
 //Создаем Dropdown menu динамически
@@ -764,7 +879,7 @@ $('button').getElem(2).addClick(() => {
 // );
 // $('.dropdown-toggle-dinamic').dropdown();
 //Динамическое создание модальных окон
-// $('#trigger').addClick(() => $('#trigger').createModal({
+// $('#trigger').click(() => $('#trigger').createModal({
 //     text: {
 //         title: 'Dinamic Modal title',
 //         body: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Deserunt, quam odit, dolor cupiditate velit porro recusandae. Tenetur, eius ullam, amet veritatis neque fuga dolorem sapiente ducimus nisi, inventore ex fugiat?'
@@ -840,18 +955,34 @@ Object(_lib_lib__WEBPACK_IMPORTED_MODULE_0__["default"])('[data-count="second"]'
 });
 Object(_lib_lib__WEBPACK_IMPORTED_MODULE_0__["default"])('button').eq(2).on('click', () => {
   Object(_lib_lib__WEBPACK_IMPORTED_MODULE_0__["default"])('.w-500').fadeToggle(800);
-});
-Object(_lib_lib__WEBPACK_IMPORTED_MODULE_0__["default"])('.wrap').html(`
-     <div class="dropdown">
-        <button class="btn btn-primary dropdown-toggle" id="dropdownMenuButton">Dropdown button</button>
-        <div class="dropdown-menu" data-toggle-id="dropdownMenuButton">
-          <a href="#" class="dropdown-item">Action</a>
-          <a href="#" class="dropdown-item">Action#2</a>
-          <a href="#" class="dropdown-item">Action#3</a>
-        </div>
-    </div> 
-`);
-Object(_lib_lib__WEBPACK_IMPORTED_MODULE_0__["default"])('.dropdown-toggle').dropdown();
+}); // $('.wrap').html(
+//     `
+//      <div class="dropdown">
+//         <button class="btn btn-primary dropdown-toggle" id="dropdownMenuButton">Dropdown button</button>
+//         <div class="dropdown-menu" data-toggle-id="dropdownMenuButton">
+//           <a href="#" class="dropdown-item">Action</a>
+//           <a href="#" class="dropdown-item">Action#2</a>
+//           <a href="#" class="dropdown-item">Action#3</a>
+//         </div>
+//     </div>
+// `
+// );
+// $('.dropdown-toggle').dropdown();
+
+Object(_lib_lib__WEBPACK_IMPORTED_MODULE_0__["default"])('#trigger').click(() => Object(_lib_lib__WEBPACK_IMPORTED_MODULE_0__["default"])('#trigger').createModal({
+  text: {
+    title: 'Modal title',
+    body: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores nobis vel aut, perferendis, ipsa aperiam quia expedita animi deserunt quis vitae similique iure saepe dolorem modi corporis facere autem asperiores?'
+  },
+  btns: {
+    count: 3,
+    settings: [['Close', ['btn-danger', 'mr-10'], true], ['Save canges', ['btn-success', 'mr-10'], false, () => {
+      alert('Changes are saved');
+    }], ['Another btn', ['btn-warning', 'ml-10'], false, () => {
+      alert('Hello World!');
+    }]]
+  }
+}));
 
 /***/ })
 

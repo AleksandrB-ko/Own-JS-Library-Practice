@@ -12,21 +12,21 @@ import $ from './lib/lib';
 //$('div').addClass('super', 'hello');
 //$('.active').removeClass('super', 'hello');
 //$('.active').toggleClass('super');
-//$('.active').addAction('click', sayHello);
-//$('.active').removeAction('click', sayHello);
-//$('.active').addClick(sayHello);
-/*$('button').addAction('click', function() {
+//$('.active').on('click', sayHello);
+//$('.active').off('click', sayHello);
+//$('.active').click(sayHello);
+/*$('button').on('click', function() {
     $(this).toggleClass('active');
 });*/
-/*$('button').addClick(function() {
+/*$('button').click(function() {
     $(this).toggleClass('active');
 });*/
 //$('button').setAttr('disabled', 'true');
 //$('button').getAttr('disabled');
-/*$('button').addClick(function() {
+/*$('button').click(function() {
     $(this).setAttr('disabled', 'true');
 });*/
-/*$('button').addClick(function() {
+/*$('button').click(function() {
     $(this).getAttr();
 });*/
 //$('div').setAttr('id', 'new');
@@ -34,23 +34,23 @@ import $ from './lib/lib';
 //$('div').removeAttr('id');
 //$('.active').setAttr('id', 'new');
 //$('.active').toggleAttr('id', 'new');
-/*$('button').addClick(function() {
+/*$('button').click(function() {
     $('.active').toggleAttr('id', 'new');
 });*/
 
 //Создаем методы для работы с элементами
 
 //console.log($('.active').htmlContent());
-/*$('button').addClick(function() {
+/*$('button').click(function() {
     $(this).htmlContent('Thanks!');
 });*/
-/*$('button').addClick(function() {
+/*$('button').click(function() {
     $('div').getElem(2).toggleClass('active');
 });*/
-/*$('button').addClick(function() {
+/*$('button').click(function() {
     $('div').getElem(2).htmlContent('Thanks!');
 });
-$('div').addClick(function() {
+$('div').click(function() {
     console.log($(this).getElemIndex());
 });*/
 //console.log($('div').getElem(2).findElem('.more'));
@@ -71,25 +71,25 @@ $('div').addClick(function() {
 
 // Работа со стилями + создаем готовые компоненты кнопок для библиотеки
 
-/*$('#first').addClick(() => {
+/*$('#first').click(() => {
     $('div').getElem(1).fadeOut(800);
 });
-$('[data-count="second"]').addClick(() => {
+$('[data-count="second"]').click(() => {
     $('div').getElem(2).fadeOut(800);
 });
-$('button').getElem(2).addClick(() => {
+$('button').getElem(2).click(() => {
     $('.w-500').fadeOut(800);
 });*/
 
 // Создаем анимацию fadeToggle
 
-/*$('#first').addClick(() => {
+/*$('#first').click(() => {
     $('div').getElem(1).fadeToggle(800);
 });
-$('[data-count="second"]').addClick(() => {
+$('[data-count="second"]').click(() => {
     $('div').getElem(2).fadeToggle(800);
 });
-$('button').getElem(2).addClick(() => {
+$('button').getElem(2).click(() => {
     $('.w-500').fadeToggle(800);
 });*/
 
@@ -109,7 +109,7 @@ $('button').getElem(2).addClick(() => {
 
 //Динамическое создание модальных окон
 
-// $('#trigger').addClick(() => $('#trigger').createModal({
+// $('#trigger').click(() => $('#trigger').createModal({
 //     text: {
 //         title: 'Dinamic Modal title',
 //         body: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Deserunt, quam odit, dolor cupiditate velit porro recusandae. Tenetur, eius ullam, amet veritatis neque fuga dolorem sapiente ducimus nisi, inventore ex fugiat?'
@@ -194,16 +194,49 @@ $('button').eq(2).on('click', () => {
     $('.w-500').fadeToggle(800);
 });
 
-$('.wrap').html(
-    `
-     <div class="dropdown">
-        <button class="btn btn-primary dropdown-toggle" id="dropdownMenuButton">Dropdown button</button>
-        <div class="dropdown-menu" data-toggle-id="dropdownMenuButton">
-          <a href="#" class="dropdown-item">Action</a>
-          <a href="#" class="dropdown-item">Action#2</a>
-          <a href="#" class="dropdown-item">Action#3</a>
-        </div>
-    </div> 
-`
-);
-$('.dropdown-toggle').dropdown();
+// $('.wrap').html(
+//     `
+//      <div class="dropdown">
+//         <button class="btn btn-primary dropdown-toggle" id="dropdownMenuButton">Dropdown button</button>
+//         <div class="dropdown-menu" data-toggle-id="dropdownMenuButton">
+//           <a href="#" class="dropdown-item">Action</a>
+//           <a href="#" class="dropdown-item">Action#2</a>
+//           <a href="#" class="dropdown-item">Action#3</a>
+//         </div>
+//     </div>
+// `
+// );
+// $('.dropdown-toggle').dropdown();
+
+$('#trigger').click(() => $('#trigger').createModal({
+    text: {
+        title: 'Modal title',
+        body: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores nobis vel aut, perferendis, ipsa aperiam quia expedita animi deserunt quis vitae similique iure saepe dolorem modi corporis facere autem asperiores?'
+    },
+    btns: {
+        count: 3,
+        settings: [
+            [
+                'Close',
+                ['btn-danger', 'mr-10'],
+                true
+            ],
+            [
+                'Save canges',
+                ['btn-success', 'mr-10'],
+                false,
+                () => {
+                    alert('Changes are saved');
+                }
+            ],
+            [
+                'Another btn',
+                ['btn-warning', 'ml-10'],
+                false,
+                () => {
+                    alert('Hello World!');
+                }
+            ]
+        ]
+    }
+}));
